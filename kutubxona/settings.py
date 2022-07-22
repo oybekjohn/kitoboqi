@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # internal apps [local] 
     'books.apps.booksConfig',
+    'users',
 
     # external apps [3rd-party]
     'rest_framework',
