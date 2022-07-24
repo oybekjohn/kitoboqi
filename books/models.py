@@ -15,7 +15,7 @@ class Book(models.Model):
         return self.title
 
     def __str__(self) -> str:
-        return f'{self.title}  {self.isbn}'
+        return f'{self.title}'
 
 
 class Author(models.Model):
@@ -25,10 +25,10 @@ class Author(models.Model):
     bio = models.TextField()
 
     def get_detail(self):
-        return f'{self.first_name}  {self.last_name} | {self.email}'
+        return f'{self.first_name} {self.last_name}'
 
     def __str__(self) -> str:
-        return self.get_detail()
+        return f'{self.first_name} {self.last_name}'
 
 
 class BookAuthor(models.Model):

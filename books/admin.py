@@ -1,37 +1,75 @@
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
+
 from .models import Book, Author, BookAuthor, BookReview
 
 
+#book admin view
 class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "isbn_inHTML", "describtion_short")
     search_fields = ("title", "isbn", "describtion")
     list_filter = ("title", "isbn")
+
+    fields = ["title", "isbn", "describtion"] # admin panelda malumot qo'shish tartibi
 
     def describtion_short(self, obj):
         return obj.describtion[:100]
 
     def isbn_inHTML(self, obj):
         from django.utils.html import format_html
-        return format_html("<b><i>{}</i></b>", obj.isbn)
+        return format_html("<b><u>{}</u></b>", obj.isbn)
 
     isbn_inHTML.short_description = "ISBN code"
 admin.site.register(Book, BookAdmin)
 
 
+# author admin view
 class AuthorAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["get_fullname", "email"]
+    search_fields = ('first_name', 'last_name', "email")
 
+    def get_fullname(self, obj):
+        return f'{obj.first_name} {obj.last_name}'
+
+    
+admin.site.register(Author, AuthorAdmin)
+
+
+# bookauthor admin view
+class AuthorFilter(SimpleListFilter):
+    title = "author"         # _("author") for translating
+    parameter_name = "author"
+
+    def lookups(self, request, model_admin):
+        author_data = [data for data in model_admin.model.objects.all()]
+        # print([(author.author.first_name, author.author.last_name) for author in author_data])
+        for author in author_data:
+            t = [[author.author.first_name, author.author.last_name] for author in author_data]
+            print([[author.author.first_name, author.author.last_name] for author in author_data])
+
+            return t
+        # return [(author.author.first_name, author.author.last_name) for author in author_data]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            print(self.value())
+            return queryset.filter(author__first_name=self.value())
 
 class BookAuthorAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["get_author", "book",]
+    search_fields = ["author", "book"]
+    list_filter = ["author", "book"]  # list_filter = [AuthorFilter, "book"] - admin filter customized
+    fields = ["book", "author"]
 
+    def get_author(self, obj):
+        return f'{obj.author.first_name} {obj.author.last_name}'
+    get_author.short_description = "user"
 
-admin.site.register(Author, AuthorAdmin)
 admin.site.register(BookAuthor, BookAuthorAdmin)
 
 
 
-#admin register by decorator
+# bookreview admin register by decorator
 @admin.register(BookReview)
 class BookReviewAdmin(admin.ModelAdmin):
     search_fields = ('stars_given',)
