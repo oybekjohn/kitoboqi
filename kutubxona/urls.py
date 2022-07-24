@@ -22,6 +22,6 @@ urlpatterns = [
     path('', views.landing_page, name='landing_page'),
 
 
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
 ]
