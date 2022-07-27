@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
@@ -45,3 +46,14 @@ class LoginView(View):
             return redirect("landing_page")
         else:
             return render(request, "users/login.html", {"login_form": login_form})
+
+
+class ProfileView(LoginRequiredMixin,View):
+    def get(self, request):
+        # # shu if kerak emas agarda LoginRequoredMixin dan inheritanse olsak ProfileView classimizga (lekin keyin settingda LOGIN_URL ni korsatib qoyilishimiz kk)
+        # if not request.user.is_authenticated:
+        #     return redirect("users:login")
+        return render(request, "users/profile.html", {"user": request.user})
+
+
+ 

@@ -15,6 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = "users:login"    #is_authenticated uchun LoginRequiredMixin ishlatilganda 
 
 # Application definition
 

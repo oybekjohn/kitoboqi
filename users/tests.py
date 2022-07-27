@@ -132,3 +132,29 @@ class LoginTestCase(TestCase):
         user = get_user(self.client)
         self.assertFalse(user.is_authenticated)
 
+
+
+class ProfileTestCase(TestCase):
+    def test_login_required(self):
+        response = self.client.get(reverse("users:profile"))
+
+        self.assertEqual(response.url, reverse("users:login")+ "?next=/users/profile/")   # + loginrequiredmixin uchun
+        self.assertEqual(response.status_code, 302)
+    
+    def test_profile_detail(self):
+        test_user = User.objects.create(
+            username="someone", first_name="something", last_name = "some", email="test@gmail.com"
+            )
+        test_user.set_password("root")
+        test_user.save()
+
+        self.client.login(username="someone", password="root")   #userni log in qildi, bundan pastida login holatda bo'ladi
+
+        response = self.client.get(reverse("users:profile"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, test_user.username)
+        self.assertContains(response, test_user.first_name)
+        self.assertContains(response, test_user.last_name)
+        self.assertContains(response, test_user.email)
+        
