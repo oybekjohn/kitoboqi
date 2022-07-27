@@ -1,28 +1,17 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>book page</title>
-</head>
-<body>
-    
-    <h1>Book page</h1>
+{% extends "base.html"%}
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <span class="{{ message.tags }}">{{ message }}</span>
-            {% endfor %}
-        </ul>
-    {% endif %}
+{% block title %}Books List{% endblock %}
+
+
+
+{% block content %}
+    <h1>Books page</h1>
 
     {% if books %}
         <p>
             {% for book in books %}
             <li>
                 <a href="{% url 'books:detail' book.id %}">{{ book.title }}</a>
-                <p>{{ book.describtion }}</p> <br>
             </li>
             {% endfor %}
         </p>
@@ -32,5 +21,4 @@
 
     {% endif %}
 
-</body>
-</html>
+{% endblock %}

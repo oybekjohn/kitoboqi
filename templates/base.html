@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}kitob o'qi{% endblock %}</title>
+</head>
+<body>
+
+    <p>
+
+        <a href="{% url 'books:list' %}">Books</a> / <a href="{% url 'users:profile' %}">Profile</a>
+        / <a href="{% url 'users:register' %}">Register</a>
+    
+        {% if request.user.is_authenticated %}
+        / <a href="{% url 'users:logout' %}">Logout</a>
+        {% else %}
+        / <a href="{% url 'users:login' %}">Login</a>
+        {% endif %}
+
+    </p>
+
+    {% if messages %}
+
+        <ul>
+            {% for message in messages %}
+            <span class="{{ message.tags }}">{{ message }}</span>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>
