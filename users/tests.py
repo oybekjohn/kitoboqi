@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user
 from django.test import TestCase
 from django.urls import reverse
 
@@ -25,8 +26,7 @@ class RegistrationTestCase(TestCase):
         self.assertEqual(user.email, "aka@gmail.com")
         self.assertNotEqual(user.password, 'aka')
         self.assertTrue(user.check_password('aka'))
-
-    
+ 
 # majburiy poliyalarni test qilish
     def test_required_fields(self):
 # responsega self yani request orqali reverse urelga data yuborish
@@ -87,3 +87,48 @@ class RegistrationTestCase(TestCase):
         self.assertNotEqual(user_count_check, 0)
         self.assertFormError(response, "form", "username", "A user with that username already exists.")
          
+
+class LoginTestCase(TestCase):
+    def test_successful_login(self):
+        addNewtoDB_user = User.objects.create(username="aka", first_name="aka")
+        addNewtoDB_user.set_password("aka")
+        addNewtoDB_user.save()
+
+        self.client.post(
+            reverse("users:login"),
+            data={
+                "username": "aka",
+                "password": "aka",
+            }
+        )
+        user = get_user(self.client)
+
+        self.assertTrue(user.is_authenticated)
+
+
+    def test_wrong_credentials(self):
+        addNewtoDB_user = User.objects.create(username="aka", first_name="aka")
+        addNewtoDB_user.set_password("aka")
+        addNewtoDB_user.save()
+
+        self.client.post(
+            reverse("users:login"),
+            data={
+                "username": "wrong-username",
+                "password": "aka",
+            }
+        )
+        user = get_user(self.client)
+        self.assertFalse(user.is_authenticated)
+
+
+        self.client.post(
+            reverse("users:login"),
+            data={
+                "username": "aka",
+                "password": "wrongpassword",
+            }
+        )
+        user = get_user(self.client)
+        self.assertFalse(user.is_authenticated)
+
