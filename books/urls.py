@@ -1,10 +1,12 @@
 from django.urls import path
 
+from .views import BooksView, BookDetailView 
 # from .views import RegisterView
 
 
 app_name = "books"
 urlpatterns=[
-    # path("register/", RegisterView.as_view(), name="register"),
+    path("", BooksView.as_view(), name="list"),
+    path("<int:id>/", BookDetailView.as_view(), name="detail")
 
 ]
