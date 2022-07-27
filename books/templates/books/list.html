@@ -9,6 +9,14 @@
     
     <h1>Book page</h1>
 
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <span class="{{ message.tags }}">{{ message }}</span>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     {% if books %}
         <p>
             {% for book in books %}

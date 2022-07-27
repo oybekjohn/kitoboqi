@@ -89,11 +89,14 @@ class RegistrationTestCase(TestCase):
          
 
 class LoginTestCase(TestCase):
-    def test_successful_login(self):
-        addNewtoDB_user = User.objects.create(username="aka", first_name="aka")
-        addNewtoDB_user.set_password("aka")
-        addNewtoDB_user.save()
+    def setUp(self):
+        # DRY - Dont Repeat Yourself
+        self.addNewtoDB_user = User.objects.create(username="aka", first_name="aka")
+        self.addNewtoDB_user.set_password("aka")
+        self.addNewtoDB_user.save()
 
+        
+    def test_successful_login(self):
         self.client.post(
             reverse("users:login"),
             data={
@@ -107,10 +110,6 @@ class LoginTestCase(TestCase):
 
 
     def test_wrong_credentials(self):
-        addNewtoDB_user = User.objects.create(username="aka", first_name="aka")
-        addNewtoDB_user.set_password("aka")
-        addNewtoDB_user.save()
-
         self.client.post(
             reverse("users:login"),
             data={
@@ -133,6 +132,16 @@ class LoginTestCase(TestCase):
         self.assertFalse(user.is_authenticated)
 
 
+    def test_logout(self):
+        self.client.login(username="usertes", password="testpass")
+
+        self.client.get(reverse("users:logout"))
+
+        user = get_user(self.client)
+
+        self.assertFalse(user.is_authenticated)        
+
+
 
 class ProfileTestCase(TestCase):
     def test_login_required(self):
@@ -140,6 +149,7 @@ class ProfileTestCase(TestCase):
 
         self.assertEqual(response.url, reverse("users:login")+ "?next=/users/profile/")   # + loginrequiredmixin uchun
         self.assertEqual(response.status_code, 302)
+    
     
     def test_profile_detail(self):
         test_user = User.objects.create(
