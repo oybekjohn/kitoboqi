@@ -66,4 +66,12 @@ class LogoutView(LoginRequiredMixin, View):
         return redirect("landing_page")
 
 
+class ProfileUpdateView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, "users/profile_edit.html")
+
+
+    def post(self, request):
+        pass
+
  

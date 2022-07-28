@@ -4,13 +4,13 @@
 
 
 {% block content %}
+
     <form method="post" action="{% url 'users:login' %}">
         
         {% csrf_token %}
         {{ login_form.as_p }}
 
-        <input type="submit" value="Login">
+        <input type="submit" value="Login"> <span class="ms-3"> No account?  Then, <a href="{% url 'users:register' %}"> get register</a></span>
     </form>
 
-    <a href="{% url 'users:register' %}">Register</a>
 {% endblock %}
