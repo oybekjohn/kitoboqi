@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 
-from .forms import UserCreateForm
+from users.forms import UserCreateForm, UserUpdateForm
 from django.views import View
 
 
@@ -68,10 +68,22 @@ class LogoutView(LoginRequiredMixin, View):
 
 class ProfileUpdateView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, "users/profile_edit.html")
+        user_old_data_get = UserUpdateForm(instance=request.user)
+        contex = {
+            "form" : user_old_data_get
+        }
+        return render(request, "users/profile_edit.html", contex)
 
 
     def post(self, request):
-        pass
+        user_data = UserUpdateForm(instance=request.user, data=request.POST)
+
+        if user_data.is_valid():
+            user_data.save()
+            messages.success(request, "You have successfully updated your profile.")
+
+            return redirect("users:profile")
+        
+        return render(request, "users:profile-edit", {"form":user_data})
 
  

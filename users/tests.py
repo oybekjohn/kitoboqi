@@ -1,3 +1,4 @@
+from urllib import response
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user
 from django.test import TestCase
@@ -168,3 +169,32 @@ class ProfileTestCase(TestCase):
         self.assertContains(response, test_user.last_name)
         self.assertContains(response, test_user.email)
         
+    
+    def test_update_profile(self):
+        # User modelga user(oybek) degan user yaratib olyabmiz
+        user = User.objects.create(
+            username="oybek", first_name="fname", last_name="lname", email="oybek@gmail.com"
+        )
+        user.set_password("root")
+        user.save()
+        self.client.login(username="oybek", password="root") # yaratilgan userni login qivolyabmiz
+
+        # yaratilgan userni edit qilish uchun huddi UserUpdateForm kabi malumot uzatyabmiz
+        response = self.client.post(
+            reverse("users:profile-edit"),
+            data={
+                "username": "oybek",
+                "first_name": "new_fname",
+                "last_name": "lname",
+                "email": "oybek@gmail.com"
+            }
+        )
+        # va o'zgartiryotgan userni id si bilan ovolib refresh qilib qoyadi
+        # user = User.objects.get(pk=user.pk)
+        # yoki bu
+        user.refresh_from_db()
+
+        self.assertEqual(user.username, "oybek")
+        self.assertEqual(user.first_name, "new_fname")
+        self.assertEqual(response.url, reverse("users:profile"))
+
