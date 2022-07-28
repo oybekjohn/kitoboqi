@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 
-from .models import BookAuthor, Book
+from books.models import Book
 
 
 class BooksView(View):

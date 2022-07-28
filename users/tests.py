@@ -1,8 +1,8 @@
-from urllib import response
-from django.contrib.auth.models import User
 from django.contrib.auth import get_user
 from django.test import TestCase
 from django.urls import reverse
+
+from users.models import CustomUser
 
 
 class RegistrationTestCase(TestCase):
@@ -20,7 +20,7 @@ class RegistrationTestCase(TestCase):
             }
         )
 
-        user = User.objects.get(username='aka')
+        user = CustomUser.objects.get(username='aka')
         
         self.assertEqual(user.first_name, 'aka')
         self.assertEqual(user.last_name, 'aka')
@@ -40,7 +40,7 @@ class RegistrationTestCase(TestCase):
             }
         )
 
-        user_count = User.objects.count()
+        user_count = CustomUser.objects.count()
 
         self.assertEqual(user_count, 0)
         self.assertFormError(response, "form", "username", "Ushbu maydon to'ldirilishi shart.")
@@ -59,7 +59,7 @@ class RegistrationTestCase(TestCase):
             }
         )
 
-        user_count_from_database = User.objects.count()
+        user_count_from_database = CustomUser.objects.count()
 
         self.assertEqual(user_count_from_database, 0)
         self.assertFormError(response, "form", "email", "To'g'ri elektron pochta manzilini kiriting.")
@@ -67,7 +67,7 @@ class RegistrationTestCase(TestCase):
 # userlarni unique ekanligini tekshiramiz
     def test_user_uniqeu(self):
         # avval foydalanuvchi qo'shamiz chunki test qilishda bazadan olmaydi, o'zi yangi baza yaratib test qiladi
-        addNew_user = User.objects.create(username="aka", first_name="aka")
+        addNew_user = CustomUser.objects.create(username="aka", first_name="aka")
         addNew_user.set_password("aka")
         addNew_user.save()
         
@@ -82,7 +82,7 @@ class RegistrationTestCase(TestCase):
                 "password" : "something1",
             }
         )
-        user_count_check = User.objects.count()
+        user_count_check = CustomUser.objects.count()
 
         self.assertEqual(user_count_check, 1)
         self.assertNotEqual(user_count_check, 0)
@@ -92,7 +92,7 @@ class RegistrationTestCase(TestCase):
 class LoginTestCase(TestCase):
     def setUp(self):
         # DRY - Dont Repeat Yourself
-        self.addNewtoDB_user = User.objects.create(username="aka", first_name="aka")
+        self.addNewtoDB_user = CustomUser.objects.create(username="aka", first_name="aka")
         self.addNewtoDB_user.set_password("aka")
         self.addNewtoDB_user.save()
 
@@ -153,7 +153,7 @@ class ProfileTestCase(TestCase):
     
     
     def test_profile_detail(self):
-        test_user = User.objects.create(
+        test_user = CustomUser.objects.create(
             username="someone", first_name="something", last_name = "some", email="test@gmail.com"
             )
         test_user.set_password("root")
@@ -172,7 +172,7 @@ class ProfileTestCase(TestCase):
     
     def test_update_profile(self):
         # User modelga user(oybek) degan user yaratib olyabmiz
-        user = User.objects.create(
+        user = CustomUser.objects.create(
             username="oybek", first_name="fname", last_name="lname", email="oybek@gmail.com"
         )
         user.set_password("root")
