@@ -76,7 +76,11 @@ class ProfileUpdateView(LoginRequiredMixin, View):
 
 
     def post(self, request):
-        user_data = UserUpdateForm(instance=request.user, data=request.POST)
+        user_data = UserUpdateForm(
+            instance=request.user, 
+            data=request.POST,
+            files=request.FILES
+            )
 
         if user_data.is_valid():
             user_data.save()
