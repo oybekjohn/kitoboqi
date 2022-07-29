@@ -8,6 +8,7 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     describtion = models.TextField()
     isbn = models.CharField(max_length=17)
+    cover_picture = models.ImageField(default="default_book_pic.png")
 
     class Meta:
         ordering = ["title", "isbn"]

@@ -43,8 +43,8 @@ class RegistrationTestCase(TestCase):
         user_count = CustomUser.objects.count()
 
         self.assertEqual(user_count, 0)
-        self.assertFormError(response, "form", "username", "Ushbu maydon to'ldirilishi shart.")
-        self.assertFormError(response, "form", "password", "Ushbu maydon to'ldirilishi shart.")
+        self.assertFormError(response, "form", "username", 'This field is required.')
+        self.assertFormError(response, "form", "password", 'This field is required.')
 
 # user email formati xato kiritganligiga test
     def test_invalid_email(self):
@@ -62,7 +62,7 @@ class RegistrationTestCase(TestCase):
         user_count_from_database = CustomUser.objects.count()
 
         self.assertEqual(user_count_from_database, 0)
-        self.assertFormError(response, "form", "email", "To'g'ri elektron pochta manzilini kiriting.")
+        self.assertFormError(response, "form", "email", 'Enter a valid email address.')
 
 # userlarni unique ekanligini tekshiramiz
     def test_user_uniqeu(self):

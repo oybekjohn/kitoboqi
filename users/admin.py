@@ -6,7 +6,7 @@ from users.models import CustomUser
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ["username", "email", "id"]
+    list_display = ["username", "email", "id", "date_joined"]
     search_fields = ["username",]
     sortable_by = ("username",)
     list_filter = ("username",)   # this is stupidity cause username is unique ;)

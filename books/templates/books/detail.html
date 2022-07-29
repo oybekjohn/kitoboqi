@@ -4,9 +4,11 @@
 
 
 {% block content %}
-
-    <h1>Book detail page</h1>
     <h4>{{ book.title }}</h4>
+
+    <img class="book-pic" src="{{ book.cover_picture.url }}" alt="{{ book.cover_picture }}">    
+
+    
     <p>{{ book.describtion }}</p>
     
 {% endblock %}

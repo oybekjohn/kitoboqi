@@ -10,7 +10,7 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ("title", "isbn", "describtion")
     list_filter = ("title", "isbn")
 
-    fields = ["title", "isbn", "describtion"] # admin panelda malumot qo'shish tartibi
+    # fields = ["title", "isbn", "describtion", "cover_picture"] # admin panelda malumot qo'shish tartibi | ADMIN panelda fields berishni yana bitta yomon tarafi, modelga qoshimcha poliya kiritilsayu bu yerda berilmasa adminda chiqmaydi ;)
 
     def describtion_short(self, obj):
         return obj.describtion[:100]
