@@ -12,15 +12,19 @@ class BookTestCase(TestCase):
 
 
     def test_books_list(self):
-        Book.objects.create(title="book1", describtion="descrip1", isbn="121212")
-        Book.objects.create(title="book2", describtion="descrip2", isbn="122212")
-        Book.objects.create(title="book3", describtion="descrip3", isbn="123212")
+        book1 = Book.objects.create(title="book1", describtion="descrip1", isbn="121212")
+        book2 = Book.objects.create(title="book2", describtion="descrip2", isbn="122212")
+        book3 = Book.objects.create(title="book3", describtion="descrip3", isbn="123212")
      
         response = self.client.get(reverse("books:list"))
 
-        books = Book.objects.all()
-        for book in books:
+        
+        for book in [book1, book2]:
             self.assertContains(response, book.title)
+
+        response = self.client.get(reverse("books:list") + "?page=1")
+
+        self.assertContains(response, book3.title)
 
     
     def test_detail_page(self):
