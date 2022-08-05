@@ -73,7 +73,8 @@ admin.site.register(BookAuthor, BookAuthorAdmin)
 @admin.register(BookReview)
 class BookReviewAdmin(admin.ModelAdmin):
     search_fields = ('stars_given',)
-    list_display = ["get_book_title", "get_user", "stars_given", "comment_fix"]
+    list_display = ["get_book_title", "get_user", "stars_given", "comment_fix", "created_at", "updated_at"]
+    
 
     def get_book_title(self, obj):
         result = obj.book.title

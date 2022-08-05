@@ -2,7 +2,7 @@
 
 {% load crispy_forms_tags %}  # form uchun
 
-{% block title %} Book Detail Page {% endblock %}
+{% block title %} Book Detail{% endblock %}
 
 
 {% block content %}
@@ -14,6 +14,18 @@
         <div class="col-6 ms-3">
 
             <h3>{{ book.title }} </h3>
+
+            <span class="fst-italic">
+                Authored by
+                {% for book_author in book.bookauthor_set.all %}
+                    {% if forloop.last %}
+                        {{ book_author.author.get_detail }}
+                    {% else %}
+                        {{ book_author.author.get_detail }},
+                    {% endif %}                
+                {% endfor %}
+
+            </span>
             
             <p>
                 {{ book.describtion }}
@@ -41,11 +53,17 @@
                 <div class="row mb-3">
 
                     <div class="col-1">
-                        <img style="width: 100px" src="{{ review.user.profile_picture.url }}">
+                        <img style="width: 100px; height: 100px; border-radius: 50%" src="{{ review.user.profile_picture.url }}">
                     </div>
 
                     <div class="col-7">
                         <b>{{ review.user.username }}</b> rated it {{ review.stars_given }} stars at  <span class="fw-lighter"> {{ review.created_at }} </span>
+                        
+                        {% if review.user == request.user %}     {% comment %} hamma ozini commentini o'zgartira olishi uchun {% endcomment %}
+                            <a href="{% url 'books:edit-review' book.id review.id %}"><i class="bi bi-pen"></i></a>
+                            <a href="{% url 'books:confirm-delete-review' book.id review.id %}"><i class="bi bi-trash"></i></a>
+                        {% endif %}
+                        
                         <p class="mt-2 font-monospace">{{ review.comment }}</p>
                     </div>
                 </div>
