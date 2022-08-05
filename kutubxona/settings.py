@@ -155,3 +155,7 @@ EMAIL_HOST_PASSWORD = "hvqrgczmsjphfjvw"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+
+# # celery uchun sozlama
+# CELERY_BROKER_URL = "something"
