@@ -6,7 +6,7 @@ from users.models import CustomUser
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
-    describtion = models.TextField()
+    describtion = models.TextField(verbose_name="Kitobga ta'rif")
     isbn = models.CharField(max_length=17)
     cover_picture = models.ImageField(default="default_book_pic.png")
 

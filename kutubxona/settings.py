@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'kutubxona.middleware.SimpleMiddleware',
+    'kutubxona.middleware.SimpleMiddleware',   #middleware py ni shu yerda qo'shamiz va u ishlaydi
 ]
 
 ROOT_URLCONF = 'kutubxona.urls'
