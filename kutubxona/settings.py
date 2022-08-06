@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # internal apps [local] 
     'books',
     'users',
+    'api',
 
     # external apps [3rd-party]
     'rest_framework',
