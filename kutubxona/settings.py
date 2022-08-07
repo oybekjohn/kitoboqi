@@ -1,23 +1,29 @@
+import environ
+import os
+
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wit5gw^v@fr5_b*pt=f&2p-*q1@v=cb(xr@1j0g1fou8*6px5l'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+SECRET_KEY = env('SECRET_KEY')
 
-LOGIN_URL = "users:login"    #is_authenticated uchun LoginRequiredMixin ishlatilganda 
+DEBUG = env('DEBUG')
 
-# Application definition
+ALLOWED_HOSTS = ['*']
+
+LOGIN_URL = "users:login"
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -89,10 +95,10 @@ DATABASES = {
     # },
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'admindb', 
-        'USER': 'admin', 
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1', 
+        'NAME': env('DB_NAME'), 
+        'USER': env('DB_USER'), 
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
         'PORT': '5432',
     }
 }
@@ -151,8 +157,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # send gmail settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = "tempkitob@gmail.com"
-EMAIL_HOST_PASSWORD = "hvqrgczmsjphfjvw"
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
