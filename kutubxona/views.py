@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 
 
-from books.models import Book, BookReview
+from books.models import BookReview
 
 def landing_page(request):
     return render(request, "landing.html")
