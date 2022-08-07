@@ -9,19 +9,21 @@ from users.models import CustomUser
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ["title", "describtion", "isbn", "cover_picture"]
+        fields = ('id', 'title', 'describtion', 'isbn')
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["username", "first_name", "last_name", "email", "profile_picture"]
+        fields = ('id', 'first_name', 'last_name', 'email', 'username')
 
 
 class BookReviewSerializer(serializers.ModelSerializer):
-    book = BookSerializer() #book serializerning id sini orniga dannilarini olib beradi
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)    #book serializerning id sini orniga dannilarini olib beradi
+    book = BookSerializer(read_only=True)
+    user_id = serializers.IntegerField(write_only=True)
+    book_id = serializers.IntegerField(write_only=True)
     class Meta:
         model = BookReview
-        fields = ("stars_given", "comment", "book", "user", "created_at")   
+        fields = ("id", "stars_given", "comment", "book", "user", "user_id", "book_id")   
     

@@ -1,11 +1,11 @@
 from django.urls import path
 
-from api.views import BookReviewDetailAPIView, BookListAPIView
+from api.views import BookReviewDetailAPIView, BookReviewAPIView
 
 
 app_name = "api"
 
 urlpatterns = [
-    path("reviews/", BookListAPIView.as_view(), name="review-list"),
+    path("reviews/", BookReviewAPIView.as_view(), name="review-list"),
     path("reviews/<int:id>/", BookReviewDetailAPIView.as_view(), name="review-detail"),
 ]
