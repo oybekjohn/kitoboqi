@@ -26,4 +26,6 @@ class BookReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookReview
         fields = ("id", "stars_given", "comment", "book", "user", "user_id", "book_id")   
+
+# user_id and book_id user for creating review POST
     
