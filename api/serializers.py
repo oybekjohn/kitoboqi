@@ -1,22 +1,27 @@
+from dataclasses import fields
+from pyexpat import model
 from rest_framework import serializers
 
-
-class BookSerializer(serializers.Serializer):
-    title = serializers.CharField()
-    describtion = serializers.CharField()
-    isbn = serializers.CharField()
+from books.models import Book, BookReview
+from users.models import CustomUser
 
 
-class UserSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    email = serializers.EmailField()
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ["title", "describtion", "isbn", "cover_picture"]
 
 
-class BookReviewSerializer(serializers.Serializer):
-    stars_given = serializers.IntegerField(min_value=1, max_value=5)
-    comment = serializers.CharField()
-    book = BookSerializer()
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["username", "first_name", "last_name", "email", "profile_picture"]
+
+
+class BookReviewSerializer(serializers.ModelSerializer):
+    book = BookSerializer() #book serializerning id sini orniga dannilarini olib beradi
     user = UserSerializer()
+    class Meta:
+        model = BookReview
+        fields = ("stars_given", "comment", "book", "user", "created_at")   
     
