@@ -15,7 +15,7 @@ from api.serializers import BookReviewSerializer
 class BookReviewsViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = BookReviewSerializer
-    queryset = BookReview.objects.all()
+    queryset = BookReview.objects.all().order_by("-created_at")
     lookup_field = "id"
 
 
