@@ -17,7 +17,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BookReviewSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)    #book serializerning id sini orniga dannilarini olib beradi
+    user = UserSerializer(read_only=True)
     book = BookSerializer(read_only=True)
     user_id = serializers.IntegerField(write_only=True)
     book_id = serializers.IntegerField(write_only=True)
@@ -25,5 +25,4 @@ class BookReviewSerializer(serializers.ModelSerializer):
         model = BookReview
         fields = ("id", "stars_given", "comment", "book", "user", "user_id", "book_id")   
 
-# user_id and book_id user for creating review POST
     
