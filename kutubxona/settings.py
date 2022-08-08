@@ -20,7 +20,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['django.example.com', 'localhost', '0.0.0.0', '*']
 
 LOGIN_URL = "users:login"
 
