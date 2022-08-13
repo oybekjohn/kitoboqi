@@ -1,5 +1,7 @@
 import environ
 import os
+# import sys      # for sys.path.append( ... )
+
 
 from pathlib import Path
 
@@ -7,14 +9,9 @@ env = environ.Env(
     DEBUG=(bool, False)
 )
 
-
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-
-
-
 
 SECRET_KEY = env('SECRET_KEY')
 
@@ -22,7 +19,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['44.206.255.60', 'localhost', '0.0.0.0', '*']
 
-LOGIN_URL = "users:login"
+LOGIN_URL = "users:login"   # url to redirect to if not logged in
 
 
 INSTALLED_APPS = [
@@ -40,19 +37,25 @@ INSTALLED_APPS = [
 
     # external apps [3rd-party]
     'rest_framework',
-    "crispy_forms",
-    "crispy_bootstrap5",
+    'rest_framework_swagger',          # swagger
+    "corsheaders",                  # cors for other domains for example React (frontchi uchun)
+    "crispy_forms",               # forms bootstrap
+    "crispy_bootstrap5",         # forms bootstrap
 
 ]
 
-
+# bootstrap5 crispy forms uchun
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
+
+# Middleware sozlamalari
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",     # CORS uchun
+    "django.middleware.common.CommonMiddleware", # CORS uchun
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -62,8 +65,12 @@ MIDDLEWARE = [
     'kutubxona.middleware.SimpleMiddleware',   #middleware py ni shu yerda qo'shamiz va u ishlaydi
 ]
 
+
+# qolda yozilgan SimpleMiddleware ni ishlatish
 ROOT_URLCONF = 'kutubxona.urls'
 
+
+# Template configuration
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -78,16 +85,23 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+
+            # swagger uchun
+            'libraries' : {
+                'staticfiles': 'django.templatetags.static', 
+            }
+
         },
     },
 ]
 
+
+#wsgi depolyment uchun
 WSGI_APPLICATION = 'kutubxona.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# Database
 DATABASES = {
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -104,18 +118,60 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
+# SWAGGER_SETTINGS
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic'
+        }
+    },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework.authentication.BasicAuthentication',
+    #     'rest_framework.authentication.SessionAuthentication',
+    # ),
+
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2,
+
+    # 'DEFAULT_FILTER_BACKENDS': (
+    #     'django_filters.rest_framework.DjangoFilterBackend',
+    # ),
+
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    #     'rest_framework.renderers.BrowsableAPIRenderer',
+    # ),
+
+    # 'DEFAULT_PARSER_CLASSES': (
+    #     'rest_framework.parsers.JSONParser',
+    #     'rest_framework.parsers.FormParser',
+    #     'rest_framework.parsers.MultiPartParser',
+    # ),
+} 
+
+
+
+
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
-        # 'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        # 'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
@@ -123,9 +179,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.0/topics/i18n/
 
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Tashkent'
@@ -135,14 +190,14 @@ USE_I18N = True
 USE_TZ = True
 
 
-AUTH_USER_MODEL = "users.CustomUser"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = "media-files"     # yuklangan media fayllar saqlanadigan folder
+# Model configuration
+AUTH_USER_MODEL = "users.CustomUser"
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
+MEDIA_URL = "/media/"
+MEDIA_ROOT = "media-files"     # yuklangan media fayllar saqlanadigan folder
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
@@ -150,12 +205,12 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = 'static-files'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# send gmail settings
+
+# Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
@@ -165,12 +220,13 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 
-# # celery uchun sozlama
+# # Celery uchun sozlama
 # CELERY_BROKER_URL = "something"
 
 
-# drf paginatsiya
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 2
-}
+
+CORS_ALLOWED_ORIGINS = [
+    # "https://example.com",
+    # "https://sub.example.com",
+    # "http://localhost:3000",            # frontendni ishlatish uchun 
+]
