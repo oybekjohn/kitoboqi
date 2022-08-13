@@ -1,4 +1,5 @@
 import os
+import socket
 
 import environ                     # .env file parser
 from datetime import timedelta     # for JWT expiration   
@@ -7,6 +8,8 @@ from datetime import timedelta     # for JWT expiration
 from pathlib import Path
 
 
+if socket.gethostname() == 'smartslave-dev':     # localda run qilinganda shu fayldan malumotlarni oladi
+    from .setting_test import *
 
 env = environ.Env(
     DEBUG=(bool, False)
