@@ -22,7 +22,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['44.206.255.60', 'localhost', '0.0.0.0', '*']
 
-LOGIN_URL = "users:login"   # url to redirect to if not logged in
+LOGIN_URL = "users:login"            # url to redirect to if not logged in
 
 
 INSTALLED_APPS = [
@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles',    # this is also need required for serving Swagger UI's css/js files
 
     # internal apps [local] 
     'books',
@@ -40,10 +40,10 @@ INSTALLED_APPS = [
 
     # external apps [3rd-party]
     'rest_framework',
-    'rest_framework_swagger',          # swagger
-    "corsheaders",                  # cors for other domains for example React (frontchi uchun)
-    "crispy_forms",               # forms bootstrap
-    "crispy_bootstrap5",         # forms bootstrap
+    'drf_yasg',                       # Swagger UI
+    "corsheaders",                    # cors for other domains for example React (frontchi uchun)
+    "crispy_forms",                   # forms bootstrap
+    "crispy_bootstrap5",              # forms bootstrap
 
 ]
 
@@ -58,15 +58,15 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",     # CORS uchun
-    "django.middleware.common.CommonMiddleware", # CORS uchun
+    "corsheaders.middleware.CorsMiddleware",                # CORS uchun
+    "django.middleware.common.CommonMiddleware",            # CORS uchun
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'kutubxona.middleware.SimpleMiddleware',   #middleware py ni shu yerda qo'shamiz va u ishlaydi
+    'kutubxona.middleware.SimpleMiddleware',                 #middleware py ni shu yerda qo'shamiz va u ishlaydi
 ]
 
 
@@ -168,6 +168,8 @@ SWAGGER_SETTINGS = {
         # },
         
     },
+
+    # 'VALIDATOR_URL': 'http://localhost:8000',             #swagger uchun validator ni ishlatish
 }
 
 

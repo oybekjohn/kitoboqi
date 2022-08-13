@@ -12,7 +12,7 @@ class IsOwnerCustomPermission(BasePermission):
     foydalanuvchilar faqat o'zlarini malumotlarini tahrirlay olishadi bu permisson class bilan
     '''
 
-    message = 'Only owners can see ,you are not the owner of this review'
+    message = 'Only owners can edit of own reviews, So you are not the owner of this review'
 
     def has_object_permission(self, request, view, obj):
 
