@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
+from rest_framework import filters
 
 from books.models import BookReview
 from api.serializers import BookReviewSerializer
@@ -27,3 +28,11 @@ class BookReviewsViewSet(viewsets.ModelViewSet):
     serializer_class = BookReviewSerializer
     queryset = BookReview.objects.all().order_by("-created_at")
     lookup_field = "id"
+
+    filter_backends = [filters.SearchFilter]
+    search_fields = ["$book__title", "user__username"]
+    # ordering = ['book_id']
+    # ordering_fields = ['-book_id']
+
+    # def filter_queryset(self, request, queryset, view):
+    #     return queryset.filter(owner=request.user)

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     # external apps [3rd-party]
     'rest_framework',
     'drf_yasg',                       # Swagger UI
+    'django_filters',                 # Filters for Django REST Framework  
+    
     "corsheaders",                    # cors for other domains for example React (frontchi uchun)
     "crispy_forms",                   # forms bootstrap
     "crispy_bootstrap5",              # forms bootstrap
@@ -207,9 +209,9 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 2,
 
 
-    # 'DEFAULT_FILTER_BACKENDS': (
-    #     'django_filters.rest_framework.DjangoFilterBackend',
-    # ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 
 
     # 'DEFAULT_RENDERER_CLASSES': (
