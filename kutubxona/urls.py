@@ -31,10 +31,16 @@ schema_view = swagger_get_schema_view(
 urlpatterns = [
     path('', views.landing_page, name='landing_page'),
     path('home/', views.home_page, name='home_page'),
+    
+    # apps urls
     path("users/", include("users.urls", namespace="users")),
     path("books/", include("books.urls", namespace="books")),
 
+    # allauth urls
+    path('accounts/', include('allauth.urls')),
 
+
+    # API urls
     path('api/v1/', 
     include([
         path('admin/', admin.site.urls),

@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',    # this is also need required for serving Swagger UI's css/js files
+    'django.contrib.staticfiles',            # this is also need required for serving Swagger UI's css/js files
+    'django.contrib.sites',                  # for allauth 
 
     # internal apps [local] 
     'books',
@@ -43,13 +44,19 @@ INSTALLED_APPS = [
 
     # external apps [3rd-party]
     'rest_framework',
-    'drf_yasg',                       # Swagger UI
-    'django_filters',                 # Filters for Django REST Framework  
+    'drf_yasg',                              # Swagger UI
+    'django_filters',                        # Filters for Django REST Framework  
     
-    "corsheaders",                    # cors for other domains for example React (frontchi uchun)
-    "crispy_forms",                   # forms bootstrap
-    "crispy_bootstrap5",              # forms bootstrap
+    "corsheaders",                           # cors for other domains for example React (frontchi uchun)
+    "crispy_forms",                          # forms bootstrap
+    "crispy_bootstrap5",                     # forms bootstrap
 
+    # register with oath2 
+    'allauth',                                 # allauth for authentication and registration (social login)
+    'allauth.account',                         # allauth account app
+    'allauth.socialaccount',                   # allauth socialaccount app
+    'allauth.socialaccount.providers.github',  # allauth github app
+    'allauth.socialaccount.providers.google',  # allauth google app
 ]
 
 
@@ -93,6 +100,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # # `allauth` needs this from django
+                # 'django.template.context_processors.request',
             ],
 
             # swagger uchun
@@ -261,6 +271,46 @@ REST_FRAMEWORK = {
 #     'SLIDING_TOKEN_LIFETIME': timedelta(days=1),
 #     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 # }
+
+
+
+# allauth settings
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+SITE_ID = 1
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+# ACCOUNT_AUTHENTICATION_METHOD = 'username'
+
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+
+
+
+
+# google authentication settings
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+
 
 
 
