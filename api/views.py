@@ -1,19 +1,21 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, BasePermission, SAFE_METHODS
+from rest_framework import viewsets, generics
+from rest_framework.permissions import BasePermission, SAFE_METHODS, IsAdminUser, IsAuthenticated
 from rest_framework import filters
 
-from books.models import BookReview
-from api.serializers import BookReviewSerializer
+from books.models import Book, Author, BookAuthor, BookReview
+from users.models import CustomUser
+from api.serializers import UserCreateSerializer, UserSerializer, UserUpdateSerializer, BookSerializer, AuthorSerializer, BookAuthorSerializer,BookReviewSerializer
 
 
 
-# Custom BasePermission class written by me
+
+# ------------------Custom Permissions------------------
 class IsOwnerCustomPermission(BasePermission):
     ''' 
     foydalanuvchilar faqat o'zlarini malumotlarini tahrirlay olishadi bu permisson class bilan
     '''
 
-    message = 'Only owners can edit of own reviews, So you are not the owner of this review'
+    message = 'Only owners can edit this API of own, So you are not the owner of this data'
 
     def has_object_permission(self, request, view, obj):
 
@@ -23,8 +25,83 @@ class IsOwnerCustomPermission(BasePermission):
         return obj.user == request.user
 
 
+
+
+# ------------------User Seralizers---------------------------
+# class UserCreateAPIView(generics.CreateAPIView):
+#     '''
+#     Custom user list and create API view
+#     '''
+#     queryset = CustomUser.objects.all()
+#     serializer_class = UserCreateSerializer
+#     permission_classes = [IsAdminUser]
+   
+
+
+
+# class UserListAPIView(generics.ListAPIView):
+#     '''
+#     Custom user list API view
+#     '''
+#     queryset = CustomUser.objects.all()
+#     serializer_class = UserSerializer
+#     permission_classes = [IsAdminUser]
+#     filter_backends = [filters.SearchFilter]
+#     search_fields = ['username', 'email']
+
+
+
+
+# class UserRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     '''
+#     Custom user retrieve, update, destroy API view
+#     '''
+#     queryset = CustomUser.objects.all()
+#     serializer_class = UserUpdateSerializer
+#     permission_classes = [IsOwnerCustomPermission]
+
+
+
+
+# ------------------Books Seralizers---------------------------
+class BookViewSet(viewsets.ModelViewSet):
+    '''
+    Book viewset class
+    '''
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
+
+
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    '''
+    Author viewset class
+    '''
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    permission_classes = [IsAdminUser]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name']
+
+
+
+class BookAuthorViewSet(viewsets.ModelViewSet):
+    '''
+    BookAuthor viewset class
+    '''
+    queryset = BookAuthor.objects.all()
+    serializer_class = BookAuthorSerializer
+    permission_classes = [IsAdminUser]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['book', 'author']
+
+
+
 class BookReviewsViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsOwnerCustomPermission]
+    permission_classes = [IsOwnerCustomPermission | IsAdminUser]
     serializer_class = BookReviewSerializer
     queryset = BookReview.objects.all().order_by("-created_at")
     lookup_field = "id"

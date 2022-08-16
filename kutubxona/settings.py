@@ -202,9 +202,9 @@ REST_FRAMEWORK = {
     # ),
 
 
-    # User permissions
+    # Project darajasidagi User permissionslari
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
     ),
 
 
