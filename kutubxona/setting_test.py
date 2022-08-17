@@ -9,7 +9,7 @@ DEBUG = True
 ENV = 'testing'
 
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases

@@ -23,12 +23,12 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-    <title>{% block title %}kitob o'qi{% endblock %}</title>
+    <title>{% block title %}Kitobxon{% endblock %}</title>
 </head>
 <body class="mx-5">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 ">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'landing_page' %}">Kitob O'qi</a>
+            <a class="navbar-brand" href="{% url 'landing_page' %}">Kitobxonlar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -41,7 +41,7 @@
                         <a class="nav-link {% if request.path == books_list_url %} active {% endif %}" aria-current="page" href="{{ books_list_url }}">Books</a>
                     </li>
                     <li class="nav-item ps-3">
-                        <a class="nav-link active rounded-pill bg-success text-wrap" aria-current="page" href="{% url 'swagger' %}">Free API</a>
+                        <a class="nav-link active rounded-pill bg-success text-wrap" aria-current="page" href="{% url 'swagger' %}">Get API</a>
                         {% comment %} <a class="nav-link active rounded-pill bg-success text-wrap" aria-current="page" href="{% url 'api:api-root' %}">Free API</a> {% endcomment %}
                     </li>
                 </ul>
