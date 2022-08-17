@@ -24,7 +24,7 @@
         {% for book in page_obj.object_list %}
         <div class="row mb-4">
             <div class="col-2">
-                <img class="cover-pic" src="{{ book.cover_picture.url }}">
+                <a href="{% url 'books:detail' book.id %}"><img class="cover-pic" src="{{ book.cover_picture.url }}"></a>
             </div>
 
             <div class="col-6 ms-4">
